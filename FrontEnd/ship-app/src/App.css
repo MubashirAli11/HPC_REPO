@@ -1,0 +1,123 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.MainContainer {
+  max-width: 1200px;
+  padding: 15px;
+  margin: auto;
+}
+
+.MainContainerForm {
+}
+
+.topBar {
+  display: flex;
+    align-items: center;
+}
+.topBar h2 {
+  margin-right: 20px;
+}
+
+.MainContainerForm form {
+  padding: 10px 0;
+  display: flex;
+  align-items: end;
+}
+
+.inputContainer {
+  flex: 1 1;
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  
+}
+.inputContainer label {
+
+}
+.inputContainer input {
+  border: 1px solid #dddddd;
+    padding: 8px;
+    border-radius: 5px;
+}
+.inputContainer:last-child{
+  margin-right: 0;
+}
+
+.MainContainerTable {
+
+}
+
+.MainContainerTable table {
+  
+}
+.MainContainerTable table tr {
+  
+}
+.MainContainerTable table tr th {
+}
+.MainContainerTable table tr th {
+  border: 1px solid #dddddd;
+  padding: 10px;
+  text-align: initial;
+}
+.MainContainerTable table tr td {
+  border: 1px solid #dddddd;
+  padding: 10px;
+}
+.actionBlock {
+  display: flex;
+}
+.actionBlock .buttonClass:first-child {
+  margin-right: 10px;
+}
+.buttonClass {
+  padding: 10px;
+  height: 35px;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.primaryButton {
+  background-color: #353c57;
+}
+.secondaryButton {
+  background-color: #8b8b8b;
+}
