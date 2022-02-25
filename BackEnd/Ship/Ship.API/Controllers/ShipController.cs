@@ -7,8 +7,9 @@ using System.Net;
 
 namespace Ship.API.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class ShipController : ControllerBase
     {
         private readonly IMediator _mediator;

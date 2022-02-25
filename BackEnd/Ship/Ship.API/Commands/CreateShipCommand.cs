@@ -5,9 +5,9 @@ namespace Ship.API.Commands
 {
     public class CreateShipCommand : IRequest<ApiResponse>
     {
-        public string Name { get; private set; }
-        public double Length { get; private set; }
-        public double Width { get; private set; }
-        public string Code { get; private set; }
+        public string Name { get; set; }
+        public double Length { get; set; }
+        public double Width { get; set; }
+        public string Code { get; set; }
     }
 }
