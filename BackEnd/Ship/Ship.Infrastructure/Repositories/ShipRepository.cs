@@ -20,7 +20,7 @@ namespace Ship.Infrastructure.Repositories
         {
             try
             {
-                var existingUser = await dbSet.Where(x => x.Id == entity.Id)
+                var existingUser = await dbSet.Where(x => x.Id == id)
                                                     .FirstOrDefaultAsync();
 
                 if (existingUser == null)
