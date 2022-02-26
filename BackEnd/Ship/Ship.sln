@@ -4,16 +4,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{95A89B3E-0E7F-49F6-926A-44272D7C0350}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{60F6E5CA-A827-4C15-944F-31E53A029ECA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ship.API", "Ship.API\Ship.API.csproj", "{A1F138D8-1471-4321-B266-FFDFA3719C2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ship.API", "Ship.API\Ship.API.csproj", "{A1F138D8-1471-4321-B266-FFDFA3719C2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ship.Core", "Ship.Core\Ship.Core.csproj", "{92872DBF-EAAB-48A3-A440-CF882484CCBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ship.Core", "Ship.Core\Ship.Core.csproj", "{92872DBF-EAAB-48A3-A440-CF882484CCBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ship.Infrastructure", "Ship.Infrastructure\Ship.Infrastructure.csproj", "{88E3912B-CA59-4008-8D7C-C4C39D1B5F04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ship.Infrastructure", "Ship.Infrastructure\Ship.Infrastructure.csproj", "{88E3912B-CA59-4008-8D7C-C4C39D1B5F04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ship.UnitTest", "Ship.UnitTest\Ship.UnitTest.csproj", "{5141AF65-76E0-40BF-9D2B-D9FDF36B466B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ship.UnitTest", "Ship.UnitTest\Ship.UnitTest.csproj", "{5141AF65-76E0-40BF-9D2B-D9FDF36B466B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
