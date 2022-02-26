@@ -1,8 +1,11 @@
 using FluentValidation.AspNetCore;
 using MediatR;
+using MediatR.Pipeline;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Ship.API.Behaviors;
 using Ship.API.CommandValidators;
+using Ship.API.ExceptionHandler;
 using Ship.Core.IRepositories;
 using Ship.Infrastructure;
 using Ship.Infrastructure.Context;
@@ -18,9 +21,31 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
+
+builder.Services.AddCors(options =>
+{
+    // options.use
+    options.AddPolicy("AllowAllOrigins",
+                      corebuilder =>
+                      {
+                          corebuilder
+                              .AllowAnyOrigin()
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                      });
+});
+
 AddApiVersioningConfigured(builder.Services);
 
 RegisterServices(builder.Services);
+
+
+builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
+builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(RequestPostProcessorBehavior<,>));
+
+builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 void RegisterServices(IServiceCollection services)
 {
@@ -34,6 +59,8 @@ void RegisterServices(IServiceCollection services)
     services.AddScoped<IUnitOfWork, UnitOfWork>();
     services.AddScoped<IShipRepository, ShipRepository>();
     services.AddMediatR(Assembly.GetExecutingAssembly());
+
+   
 
 }
 
@@ -50,6 +77,10 @@ void AddApiVersioningConfigured(IServiceCollection services)
 }
 
 var app = builder.Build();
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
+
+app.UseCors("AllowAllOrigins");
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())

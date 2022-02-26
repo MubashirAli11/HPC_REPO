@@ -2,10 +2,43 @@
 import axios from "axios";
 import React from "react";
 
-const baseURL = "https://jsonplaceholder.typicode.com/posts";
+import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
+import ReactPaginate from 'react-paginate';
+
+const baseURL = "http://localhost:63025/api/v1/ship";
+
+
+const posts = [
+    { id: 1, title: 'Post 1' },
+    { id: 2, title: 'Post 2' },
+    { id: 3, title: 'Post 3' },
+    { id: 4, title: 'Post 4' },
+    { id: 5, title: 'Post 5' },
+    { id: 6, title: 'Post 6' },
+    { id: 7, title: 'Post 7' },
+    { id: 8, title: 'Post 8' },
+    { id: 9, title: 'Post 9' },
+    { id: 10, title: 'Post 10' },
+    { id: 11, title: 'Post 11' },
+    { id: 12, title: 'Post 12' },
+  ];
 
 
 export const Listing = () => {
+
+  
+
+// We start with an empty list of items.
+    const [currentItems, setCurrentItems] = useState(null);
+    const [pageCount, setPageCount] = useState(0);
+// Here we use item offsets; we could also use page offsets
+// following the API or data you're working with.
+    const [itemOffset, setItemOffset] = useState(0);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const pagePostsLimit = 5;
+
     const [name, setName] = React.useState('');
     const [code, setCode] = React.useState('');
     const [length, setLength] = React.useState('');
@@ -15,16 +48,21 @@ export const Listing = () => {
 
     React.useEffect(() => {
         axios.get(`${baseURL}`).then((response) => {
-            setListing(response.data);
+            setListing(response.Data);
         });
-    }, []);
+
+        const endOffset = itemOffset + itemsPerPage;
+        console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+        setCurrentItems(listing.slice(itemOffset, endOffset));
+        setPageCount(Math.ceil(listing.length / itemsPerPage));
+    }, [itemOffset, itemsPerPage]);
 
     
 
     function handleSubmit(form) {
         console.log(name, code, length, width);
         const request = { name: name, code: code, length: length, width: width };
-        axios.post(`https://jsonplaceholder.typicode.com/users`, request)
+        axios.post(`${baseURL}`, request)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
@@ -34,7 +72,7 @@ export const Listing = () => {
     function edit(id) {
         debugger
         const request = { name: name, code: code, length: length, width: width };
-        axios.put(`https://jsonplaceholder.typicode.com/users/${id}`, request)
+        axios.put(`${baseURL}${id}`, request)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
@@ -45,7 +83,7 @@ export const Listing = () => {
     function deleteItem(id) {
         debugger
         const request = { name: name, code: code, length: length, width: width };
-        axios.post(`https://jsonplaceholder.typicode.com/users`, request)
+        axios.delete(`${baseURL}${id}`, request)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
@@ -108,16 +146,19 @@ export const Listing = () => {
                 <table>
                     <thead>
                         <tr>
-                            <td>Body</td>
-                            <td>Title</td>
-                            <td>Action</td>
+                            <td>Code</td>
+                            <td>Name</td>
+                            <td>Length</td>
+                            <td>Width</td>
                         </tr>
                     </thead>
                     <tbody>
                         {listing && listing.map((item) =>
                             <tr key={item.id}>
-                                <td>{item.body}</td>
-                                <td>{item.title}</td>
+                                <td>{item.code}</td>
+                                <td>{item.name}</td>
+                                <td>{item.length}</td>
+                                <td>{item.width}</td>
                                 <td>
                                     <div className="actionBlock">
                                         <button className="buttonClass secondaryButton" onClick={() => deleteItem(item.id)}>Delete</button>
@@ -133,6 +174,7 @@ export const Listing = () => {
             </div>
         </div>
     );
+    
 }
 
 export default Listing;

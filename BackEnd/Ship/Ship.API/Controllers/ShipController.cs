@@ -25,10 +25,21 @@ namespace Ship.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Post([FromBody] CreateShipCommand command)
         {
+            try
+            {
 
-            var commandResult = await _mediator.Send(command);
 
-            return commandResult != null ? Ok(commandResult) : BadRequest() as IActionResult;
+
+
+                var commandResult = await _mediator.Send(command);
+
+                return commandResult != null ? Ok(commandResult) : BadRequest() as IActionResult;
+            }
+            catch (Exception exp)
+            {
+
+                throw;
+            }
         }
 
 

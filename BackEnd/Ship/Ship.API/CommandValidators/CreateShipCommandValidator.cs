@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Ship.API.ApiModels.Response;
 using Ship.API.Commands;
 using System.Text.RegularExpressions;
 
@@ -15,6 +16,7 @@ namespace Ship.API.CommandValidators
 
 
             RuleFor(command => command).Must(command => ValidateCodeFormat(command))
+                
                 .WithMessage("Code should follow this format AAAA-1111-A1 A: Alphabets 1: 0-9");
         }
 
