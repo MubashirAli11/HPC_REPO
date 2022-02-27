@@ -27,6 +27,7 @@ export const Listing = () => {
 
 
     const [name, setName] = useState('');
+    const [token, setToken] = useState('');
     const [code, setCode] = useState('');
     const [length, setLength] = useState('');
     const [width, setWidth] = useState('');
@@ -38,17 +39,41 @@ export const Listing = () => {
 
 
     React.useEffect(() => {
-        listingApi();
+        LoginApi();
+        
     }, []);
 
     const listingApi = (pageIndex) => {
+        debugger;
+        console.log(token)
         const index = typeof pageIndex == "number" ? pageIndex : currentPage;
-        axios.get(`${baseURL}?PageIndex=${index}&PageSize=${pageSize}`).then((response) => {
+        
+        axios.get(`${baseURL}?PageIndex=${index}&PageSize=${pageSize}`, { headers: {"Authorization" : `Bearer ${token}`} }).then((response) => {
             const { Data, Total } = response.data;
             setListing(Data);
 
             setTotalPage(Array.from(Array(Math.ceil(100 / pageSize)).keys()));
         });
+    };
+    const LoginApi = () => {
+        const email = 'admin@gmail.com';
+        const password = 'Admin@123';
+        const data = { email, password };
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        };
+        fetch("http://localhost:43061/api/v1/User", requestOptions)
+            .then(response => response.json())
+            .then(res => {
+                debugger;
+                setToken(res.Data);
+                setTimeout(() => {
+                    listingApi();
+                  }, 2000);
+                
+            });
     };
 
     function handleSubmit(form) {
@@ -117,7 +142,7 @@ export const Listing = () => {
         <div className="MainContainer">
             <div className="MainContainerForm">
                 <div className="topBar">
-                    <h2>Listing View</h2>
+                    <h2>Listing View{token}</h2>
 
                 </div>
 

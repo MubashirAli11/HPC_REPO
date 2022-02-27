@@ -134,6 +134,10 @@
   justify-content: center;
   flex-direction: column;
 }
+.homeMain .input-container {
+  display: flex;
+  flex-direction: column;
+}
 .homeMain h1 {
 
 }
@@ -163,4 +167,8 @@
 
 .actionTableElement {
   text-align: center;max-width: 54px;
+}
+
+.button-container {
+  margin-top: 10px;
 }

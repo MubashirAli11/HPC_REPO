@@ -41,6 +41,20 @@ builder.Services.AddCors(options =>
 });
 
 
+builder.Services.AddCors(options =>
+{
+    // options.use
+    options.AddPolicy("AllowAllOrigins",
+                      corebuilder =>
+                      {
+                          corebuilder
+                              .AllowAnyOrigin()
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                      });
+});
+
+
 RegisterServices(builder.Services);
 
 AddApiVersioningConfigured(builder.Services);
@@ -86,6 +100,9 @@ void AddApiVersioningConfigured(IServiceCollection services)
 var app = builder.Build();
 
 await SeedUsers();
+
+
+app.UseCors("AllowAllOrigins");
 
 app.UseSwagger();
 app.UseSwaggerUI();
