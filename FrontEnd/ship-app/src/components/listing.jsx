@@ -1,10 +1,8 @@
 
 import axios from "axios";
-import React from "react";
-
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState } from "react";
 import ReactPaginate from 'react-paginate';
+
 
 const baseURL = "http://localhost:63025/api/v1/ship";
 
@@ -22,42 +20,36 @@ const posts = [
     { id: 10, title: 'Post 10' },
     { id: 11, title: 'Post 11' },
     { id: 12, title: 'Post 12' },
-  ];
+];
 
 
 export const Listing = () => {
 
-  
 
-// We start with an empty list of items.
-    const [currentItems, setCurrentItems] = useState(null);
-    const [pageCount, setPageCount] = useState(0);
-// Here we use item offsets; we could also use page offsets
-// following the API or data you're working with.
-    const [itemOffset, setItemOffset] = useState(0);
-
+    const [name, setName] = useState('');
+    const [code, setCode] = useState('');
+    const [length, setLength] = useState('');
+    const [width, setWidth] = useState('');
+    const [listing, setListing] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const pagePostsLimit = 5;
+    const [totalPage, setTotalPage] = useState([]);
 
-    const [name, setName] = React.useState('');
-    const [code, setCode] = React.useState('');
-    const [length, setLength] = React.useState('');
-    const [width, setWidth] = React.useState('');
-    const [listing, setListing] = React.useState(null);
+    const pageSize = 10;
 
 
     React.useEffect(() => {
-        axios.get(`${baseURL}`).then((response) => {
-            setListing(response.Data);
+        listingApi();
+    }, []);
+
+    const listingApi = (pageIndex) => {
+        const index = typeof pageIndex == "number" ? pageIndex : currentPage;
+        axios.get(`${baseURL}?PageIndex=${index}&PageSize=${pageSize}`).then((response) => {
+            const { Data, Total } = response.data;
+            setListing(Data);
+
+            setTotalPage(Array.from(Array(Math.ceil(100 / pageSize)).keys()));
         });
-
-        const endOffset = itemOffset + itemsPerPage;
-        console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-        setCurrentItems(listing.slice(itemOffset, endOffset));
-        setPageCount(Math.ceil(listing.length / itemsPerPage));
-    }, [itemOffset, itemsPerPage]);
-
-    
+    };
 
     function handleSubmit(form) {
         console.log(name, code, length, width);
@@ -89,6 +81,37 @@ export const Listing = () => {
                 console.log(res.data);
             })
     }
+
+
+    function Items({ currentItems }) {
+        return (
+            <>
+                {currentItems &&
+                    currentItems.map((item) => (
+                        <div>
+                            <h3>Item #{item}</h3>
+                        </div>
+                    ))}
+            </>
+        );
+    }
+
+    const updateCurrentPage = (pageIndex) => {
+        debugger
+        if (typeof pageIndex == "number") {
+            setCurrentPage(pageIndex);
+            listingApi(pageIndex);
+        }
+        else if (pageIndex == "Next" && currentPage < totalPage.length) {
+            setCurrentPage(currentPage + 1);
+            listingApi(currentPage + 1);
+        } else if (pageIndex == "Previous" && currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+            listingApi(currentPage - 1);
+        }
+    };
+
+
 
     return (
         <div className="MainContainer">
@@ -143,7 +166,7 @@ export const Listing = () => {
             </div>
 
             <div className="MainContainerTable">
-                <table>
+                <table className="MainContainerTableContainer">
                     <thead>
                         <tr>
                             <td>Code</td>
@@ -159,7 +182,7 @@ export const Listing = () => {
                                 <td>{item.name}</td>
                                 <td>{item.length}</td>
                                 <td>{item.width}</td>
-                                <td>
+                                <td className="actionTableElement">
                                     <div className="actionBlock">
                                         <button className="buttonClass secondaryButton" onClick={() => deleteItem(item.id)}>Delete</button>
                                         <button className="buttonClass primaryButton" onClick={() => edit(item.id)}>Edit</button>
@@ -168,13 +191,22 @@ export const Listing = () => {
                                 </td>
                             </tr>
                         )}
+
                     </tbody>
 
                 </table>
+                <div className="MainContainerTablePagination">
+                    <div onClick={() => updateCurrentPage("Previous")}>pre</div>
+                    {totalPage && totalPage.map((item) => <div key={item} onClick={() => updateCurrentPage(item + 1)}>{item + 1}</div>)}
+                    <div onClick={() => updateCurrentPage("Next")}>next</div>
+                </div>
+            </div>
+            <div>
+
             </div>
         </div>
     );
-    
+
 }
 
 export default Listing;

@@ -103,6 +103,9 @@
 }
 .actionBlock {
   display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 .actionBlock .buttonClass:first-child {
   margin-right: 10px;
@@ -120,4 +123,44 @@
 }
 .secondaryButton {
   background-color: #8b8b8b;
+}
+
+.homeMain {
+  max-width: 1400px;
+  padding: 20px;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.homeMain h1 {
+
+}
+
+.MainContainerTableContainer {
+  width: 100%;
+}
+
+.MainContainerTablePagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+}
+.MainContainerTablePagination div {
+  padding: 10px;
+  text-transform: capitalize;
+  font-size: 11px;
+  background: #dddddd;
+  margin: 3px;
+  border-radius: 8px;
+  width: 20px;
+  text-align: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.actionTableElement {
+  text-align: center;max-width: 54px;
 }

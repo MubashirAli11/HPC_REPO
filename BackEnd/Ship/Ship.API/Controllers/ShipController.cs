@@ -11,7 +11,7 @@ namespace Ship.API.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    [Authorize]
+    [AllowAnonymous]
     public class ShipController : ControllerBase
     {
         private readonly IMediator _mediator;

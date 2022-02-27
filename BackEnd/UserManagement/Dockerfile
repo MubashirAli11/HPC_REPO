@@ -10,6 +10,8 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["UserManagement.API/UserManagement.API.csproj", "UserManagement.API/"]
+COPY ["UserManagement.Core/UserManagement.Core.csproj", "UserManagement.Core/"]
+COPY ["UserManagement.Infrastructure/UserManagement.Infrastructure.csproj", "UserManagement.Infrastructure/"]
 RUN dotnet restore "UserManagement.API/UserManagement.API.csproj"
 COPY . .
 WORKDIR "/src/UserManagement.API"
