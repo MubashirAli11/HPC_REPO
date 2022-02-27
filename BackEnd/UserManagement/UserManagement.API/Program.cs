@@ -58,26 +58,6 @@ void RegisterServices(IServiceCollection services)
     services.AddScoped<IUserRepository, UserRepository>();
     services.AddMediatR(Assembly.GetExecutingAssembly());
 
-    services.AddAuthentication(x =>
-	    {
-		    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-		    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-	    }).AddJwtBearer(o =>
-	    {
-		    var Key = Encoding.UTF8.GetBytes(builder.Configuration["JwtIssuerSettings:Key"]);
-		    o.SaveToken = true;
-		    o.TokenValidationParameters = new TokenValidationParameters
-		    {
-			    ValidateIssuer = false,
-			    ValidateAudience = false,
-			    ValidateLifetime = true,
-			    ValidateIssuerSigningKey = true,
-			    ValidIssuer = builder.Configuration["JwtIssuerSettings:Issuer"],
-			    ValidAudience = builder.Configuration["JwtIssuerSettings:Audience"],
-			    IssuerSigningKey = new SymmetricSecurityKey(Key)
-		    };
-	    });
-
     services.AddScoped<AuthenticationServices>();
 
     services.AddScoped<JwtSecurityTokenHandler>();
