@@ -1,19 +1,22 @@
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Moq;
+﻿using Microsoft.EntityFrameworkCore;
 using Ship.API.CommandHandlers;
 using Ship.API.Commands;
 using Ship.Core.IRepositories;
 using Ship.Infrastructure;
 using Ship.Infrastructure.Context;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Ship.UnitTest
 {
-    public class ShipCreateTest
+    public class ShipUpdateTest
     {
         [Fact]
-        public async void Crate_Ship_With_Invalid_Code_Format()
+        public async void Update_Ship_With_Invalid_Code_Format()
         {
 
             var options = new DbContextOptionsBuilder<ShipDataContext>()
@@ -26,23 +29,31 @@ namespace Ship.UnitTest
 
             IUnitOfWork unitOfWork = new UnitOfWork(context);
 
-            CreateShipCommand command = new CreateShipCommand();
+            //Add new record
+
+
+            unitOfWork.ShipRepository.Add(new Core.Entities.ShipEntity("Ship1", 10, 10, "aBgH-3421-k8"));
+            await unitOfWork.SaveChangesAsync();
+
+
+            UpdateShipCommand command = new UpdateShipCommand();
 
             command.Code = "ahjs-hjkd-a0";
             command.Name = "ship1";
             command.Width = 10;
             command.Length = 10;
+            command.Id = 1;
 
-            CreateShipCommandHandler commandHandler = new CreateShipCommandHandler(unitOfWork);
+            UpdateShipCommandHandler commandHandler = new UpdateShipCommandHandler(unitOfWork);
 
             var respone = await commandHandler.Handle(command, new System.Threading.CancellationToken());
 
-            //Assert.True(respone.IsSuccess);
+            Assert.False(respone.IsSuccess);
             Assert.Equal(respone.Message, expectedOutput);
         }
 
         [Fact]
-        public async void Crate_Ship_With_Valid_Code_Format()
+        public async void Update_Ship_With_Valid_Code_Format()
         {
 
             var options = new DbContextOptionsBuilder<ShipDataContext>()
@@ -53,22 +64,31 @@ namespace Ship.UnitTest
 
             IUnitOfWork unitOfWork = new UnitOfWork(context);
 
-            CreateShipCommand command = new CreateShipCommand();
+            //Add new record
+
+            unitOfWork.ShipRepository.Add(new Core.Entities.ShipEntity("Ship1", 10, 10, "aBgH-3421-k8"));
+            await unitOfWork.SaveChangesAsync();
+
+            UpdateShipCommand command = new UpdateShipCommand();
 
             command.Code = "ahjs-3421-a0";
             command.Name = "ship1";
             command.Width = 10;
             command.Length = 10;
+            command.Id = 1;
 
-            CreateShipCommandHandler commandHandler = new CreateShipCommandHandler(unitOfWork);
+            UpdateShipCommandHandler commandHandler = new UpdateShipCommandHandler(unitOfWork);
 
             var respone = await commandHandler.Handle(command, new System.Threading.CancellationToken());
+
+            string expectedOutput = "Success";
+
             Assert.True(respone.IsSuccess);
+            Assert.Equal(respone.Message, expectedOutput);
         }
 
-
         [Fact]
-        public async void Crate_Ship_With_Existing_Code()
+        public async void Update_Ship_With_Not_Existing_Id()
         {
 
             var options = new DbContextOptionsBuilder<ShipDataContext>()
@@ -79,20 +99,23 @@ namespace Ship.UnitTest
 
             IUnitOfWork unitOfWork = new UnitOfWork(context);
 
-            unitOfWork.ShipRepository.Add(new Core.Entities.ShipEntity("Ship1", 10, 10, "aBgH-3421-k8"));
-            await unitOfWork.SaveChangesAsync();
+            UpdateShipCommand command = new UpdateShipCommand();
 
-            CreateShipCommand command = new CreateShipCommand();
+            command.Code = "ahjs-3421-a0";
+            command.Name = "ship1";
+            command.Width = 10;
+            command.Length = 10;
+            command.Id = 1;
 
-            command.Code = "aBgH-3421-k8";
-            command.Name = "ship2";
-            command.Width = 20;
-            command.Length = 20;
-
-            CreateShipCommandHandler commandHandler = new CreateShipCommandHandler(unitOfWork);
+            UpdateShipCommandHandler commandHandler = new UpdateShipCommandHandler(unitOfWork);
 
             var respone = await commandHandler.Handle(command, new System.Threading.CancellationToken());
-            Assert.True(respone.IsSuccess);
+
+
+            string expectedOutput = "Can't find record";
+
+            Assert.False(respone.IsSuccess);
+            Assert.Equal(respone.Message, expectedOutput);
         }
     }
 }

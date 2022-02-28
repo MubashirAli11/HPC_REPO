@@ -18,6 +18,8 @@ namespace Ship.API.CommandHandlers
         {
             try
             {
+
+
                 var ship = new ShipEntity(request.Name, request.Length, request.Width, request.Code);
 
                 await _unitOfWork.ShipRepository.Update(request.Id, ship);
@@ -28,6 +30,7 @@ namespace Ship.API.CommandHandlers
                     return ApiResponse.CreateSuccessResponse("Success", isUpdated);
 
                 return ApiResponse.CreateFailedResponse("Unable to update ship record");
+
 
             }
             catch (Exception exp)

@@ -18,16 +18,21 @@ namespace Ship.API.CommandHandlers
         {
             try
             {
-                var ship = new ShipEntity(request.Name, request.Length, request.Width, request.Code);
+                if (!await _unitOfWork.ShipRepository.Exists(request.Code))
+                {
+                    var ship = new ShipEntity(request.Name, request.Length, request.Width, request.Code);
 
-                _unitOfWork.ShipRepository.Add(ship);
+                    _unitOfWork.ShipRepository.Add(ship);
 
-                var isAdded = await _unitOfWork.SaveChangesAsync();
+                    var isAdded = await _unitOfWork.SaveChangesAsync();
 
-                if (isAdded)
-                    return ApiResponse.CreateSuccessResponse("Success", isAdded);
+                    if (isAdded)
+                        return ApiResponse.CreateSuccessResponse("Success", isAdded);
 
-                return ApiResponse.CreateFailedResponse("Unable to add ship record");
+                    return ApiResponse.CreateFailedResponse("Unable to add ship record");
+                }
+                else
+                    return ApiResponse.CreateFailedResponse("Record with same code already exists");
 
             }
             catch (Exception exp)

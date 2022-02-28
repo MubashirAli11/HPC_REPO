@@ -37,5 +37,11 @@ namespace Ship.Infrastructure.Repositories
                 return false;
             }
         }
+
+
+        public async Task<bool> Exists(string code)
+        {
+            return await dbSet.AnyAsync(x => x.Code == code);
+        }
     }
 }

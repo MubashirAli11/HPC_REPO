@@ -9,5 +9,6 @@ namespace Ship.Core.IRepositories
 {
     public interface IShipRepository : IGenericRepository<ShipEntity, int>
     {
+        Task<bool> Exists(string code);
     }
 }
