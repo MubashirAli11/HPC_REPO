@@ -28,7 +28,8 @@ namespace Ship.API.CommandValidators
             {
                 return true;
             }
-            return false;
+
+            throw new Exception("Code should follow this format AAAA-1111-A1 A: Alphabets 1: 0-9");
 
         }
     }

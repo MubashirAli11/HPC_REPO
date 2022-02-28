@@ -37,7 +37,7 @@ namespace Ship.UnitTest
 
             var respone = await commandHandler.Handle(command, new System.Threading.CancellationToken());
 
-            //Assert.True(respone.IsSuccess);
+            Assert.False(respone.IsSuccess);
             Assert.Equal(respone.Message, expectedOutput);
         }
 
@@ -63,7 +63,11 @@ namespace Ship.UnitTest
             CreateShipCommandHandler commandHandler = new CreateShipCommandHandler(unitOfWork);
 
             var respone = await commandHandler.Handle(command, new System.Threading.CancellationToken());
+
+            string expectedOutput = "Success";
+
             Assert.True(respone.IsSuccess);
+            Assert.Equal(respone.Message, expectedOutput);
         }
 
 
@@ -92,7 +96,12 @@ namespace Ship.UnitTest
             CreateShipCommandHandler commandHandler = new CreateShipCommandHandler(unitOfWork);
 
             var respone = await commandHandler.Handle(command, new System.Threading.CancellationToken());
-            Assert.True(respone.IsSuccess);
+
+
+            string expectedOutput = "Record with same code already exists";
+
+            Assert.False(respone.IsSuccess);
+            Assert.Equal(respone.Message, expectedOutput);
         }
     }
 }
