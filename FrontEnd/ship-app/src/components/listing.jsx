@@ -4,23 +4,8 @@ import React, { useState } from "react";
 import ReactPaginate from 'react-paginate';
 import { useStateWithCallbackLazy } from 'use-state-with-callback';
 
-const baseURL = "http://localhost:8080/api/v1/ship";
+const baseURL = "http://localhost:63025/api/v1/ship";
 
-
-const posts = [
-    { id: 1, title: 'Post 1' },
-    { id: 2, title: 'Post 2' },
-    { id: 3, title: 'Post 3' },
-    { id: 4, title: 'Post 4' },
-    { id: 5, title: 'Post 5' },
-    { id: 6, title: 'Post 6' },
-    { id: 7, title: 'Post 7' },
-    { id: 8, title: 'Post 8' },
-    { id: 9, title: 'Post 9' },
-    { id: 10, title: 'Post 10' },
-    { id: 11, title: 'Post 11' },
-    { id: 12, title: 'Post 12' },
-];
 
 
 export const Listing = () => {
@@ -49,8 +34,8 @@ export const Listing = () => {
         const index = typeof pageIndex == "number" ? pageIndex : currentPage;
 
         axios.get(`${baseURL}?PageIndex=${index}&PageSize=${pageSize}`, { headers: { "Authorization": `Bearer ${token}` } }).then((response) => {
-            const { Data, Total } = response.data;
-            setListing(Data);
+            const { data, Total } = response.data;
+            setListing(data);
 
             setTotalPage(Array.from(Array(Math.ceil(100 / pageSize)).keys()));
         });
@@ -64,11 +49,11 @@ export const Listing = () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         };
-        fetch("http://localhost:8081/api/v1/User", requestOptions)
+        fetch("http://localhost:43061/api/v1/User", requestOptions)
             .then(response => response.json())
             .then(res => {
                 debugger;
-                setToken(res.Data, () => {
+                setToken(res.data, () => {
                     listingApi();
                 });
 
