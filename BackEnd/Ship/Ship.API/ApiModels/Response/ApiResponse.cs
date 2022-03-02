@@ -7,13 +7,13 @@ namespace Ship.API.ApiModels.Response
         public bool IsSuccess { get; set; }
         public int StatusCode { get; set; }
         public string Message { get; set; }
-        [JsonProperty("Data", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public object? Data { get; set; }
-        [JsonProperty("Total", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int? Total { get; set; }
-        [JsonProperty("PageIndex", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int? PageIndex { get; set; }
-        [JsonProperty("PageCount", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public int? PageSize { get; set; }
 
         public ApiResponse(bool isSuccess, int statusCode, string message, object? data, int? total, int? pageIndex, int? pageSize)

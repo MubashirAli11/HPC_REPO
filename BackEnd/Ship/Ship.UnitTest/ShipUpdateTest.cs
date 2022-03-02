@@ -47,7 +47,7 @@ namespace Ship.UnitTest
             UpdateShipCommandHandler commandHandler = new UpdateShipCommandHandler(unitOfWork);
 
             var respone = await commandHandler.Handle(command, new System.Threading.CancellationToken());
-
+            Assert.Null(respone);
             Assert.False(respone.IsSuccess);
             Assert.Equal(respone.Message, expectedOutput);
         }

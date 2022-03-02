@@ -13,7 +13,7 @@ namespace Ship.UnitTest
     public class ShipCreateTest
     {
         [Fact]
-        public async void Crate_Ship_With_Invalid_Code_Format()
+        public async void Create_Ship_With_Invalid_Code_Format()
         {
 
             var options = new DbContextOptionsBuilder<ShipDataContext>()
@@ -28,7 +28,7 @@ namespace Ship.UnitTest
 
             CreateShipCommand command = new CreateShipCommand();
 
-            command.Code = "ahjs-hjkd-a0";
+            command.Code = "adfdas";
             command.Name = "ship1";
             command.Width = 10;
             command.Length = 10;
@@ -37,12 +37,13 @@ namespace Ship.UnitTest
 
             var respone = await commandHandler.Handle(command, new System.Threading.CancellationToken());
 
+            Assert.Null(respone);
             Assert.False(respone.IsSuccess);
             Assert.Equal(respone.Message, expectedOutput);
         }
 
         [Fact]
-        public async void Crate_Ship_With_Valid_Code_Format()
+        public async void Create_Ship_With_Valid_Code_Format()
         {
 
             var options = new DbContextOptionsBuilder<ShipDataContext>()
@@ -72,7 +73,7 @@ namespace Ship.UnitTest
 
 
         [Fact]
-        public async void Crate_Ship_With_Existing_Code()
+        public async void Create_Ship_With_Existing_Code()
         {
 
             var options = new DbContextOptionsBuilder<ShipDataContext>()

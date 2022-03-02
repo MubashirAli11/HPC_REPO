@@ -2,9 +2,9 @@
 import axios from "axios";
 import React, { useState } from "react";
 import ReactPaginate from 'react-paginate';
+import { useStateWithCallbackLazy } from 'use-state-with-callback';
 
-
-const baseURL = "http://localhost:63025/api/v1/ship";
+const baseURL = "http://localhost:8080/api/v1/ship";
 
 
 const posts = [
@@ -27,7 +27,7 @@ export const Listing = () => {
 
 
     const [name, setName] = useState('');
-    const [token, setToken] = useState('');
+    const [token, setToken] = useStateWithCallbackLazy('');
     const [code, setCode] = useState('');
     const [length, setLength] = useState('');
     const [width, setWidth] = useState('');
@@ -40,15 +40,15 @@ export const Listing = () => {
 
     React.useEffect(() => {
         LoginApi();
-        
+
     }, []);
 
     const listingApi = (pageIndex) => {
         debugger;
         console.log(token)
         const index = typeof pageIndex == "number" ? pageIndex : currentPage;
-        
-        axios.get(`${baseURL}?PageIndex=${index}&PageSize=${pageSize}`, { headers: {"Authorization" : `Bearer ${token}`} }).then((response) => {
+
+        axios.get(`${baseURL}?PageIndex=${index}&PageSize=${pageSize}`, { headers: { "Authorization": `Bearer ${token}` } }).then((response) => {
             const { Data, Total } = response.data;
             setListing(Data);
 
@@ -64,15 +64,14 @@ export const Listing = () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         };
-        fetch("http://localhost:43061/api/v1/User", requestOptions)
+        fetch("http://localhost:8081/api/v1/User", requestOptions)
             .then(response => response.json())
             .then(res => {
                 debugger;
-                setToken(res.Data);
-                setTimeout(() => {
+                setToken(res.Data, () => {
                     listingApi();
-                  }, 2000);
-                
+                });
+
             });
     };
 

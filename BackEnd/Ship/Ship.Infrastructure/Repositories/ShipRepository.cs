@@ -18,24 +18,15 @@ namespace Ship.Infrastructure.Repositories
 
         public override async Task<bool> Update(int id, ShipEntity entity)
         {
-            try
-            {
-                var existingUser = await dbSet.Where(x => x.Id == id)
-                                                    .FirstOrDefaultAsync();
+            var existingUser = await dbSet.Where(x => x.Id == id)
+                                                .FirstOrDefaultAsync();
 
-                if (existingUser == null)
-                    throw new Exception("Can't find record");
+            if (existingUser == null)
+                throw new Exception("Can't find record");
 
-                existingUser.Update(entity.Name, entity.Length, entity.Width, entity.Code);
+            existingUser.Update(entity.Name, entity.Length, entity.Width, entity.Code);
 
-                return true;
-            }
-            catch (Exception)
-            {
-                //TODO:
-                //Add exceptions
-                return false;
-            }
+            return true;
         }
 
 
