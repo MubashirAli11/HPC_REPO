@@ -7,7 +7,7 @@ namespace UserManagement.API.ApiModels.Response
         public bool IsSuccess { get; set; }
         public int StatusCode { get; set; }
         public string Message { get; set; }
-        [JsonProperty("Data", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public object? Data { get; set; }
 
         public ApiResponse(bool isSuccess, int statusCode, string message, object? data)
