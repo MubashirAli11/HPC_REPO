@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import ReactPaginate from 'react-paginate';
 import { useStateWithCallbackLazy } from 'use-state-with-callback';
 
-const baseURL = "http://localhost:63025/api/v1/ship";
+const baseURL = "http://localhost:8080/api/v1/ship";
 
 
 
@@ -51,46 +51,62 @@ export const Listing = () => {
             .then(res => {
                 console.log(res);
                 console.log(res.data);
+
+                if(!res.data.isSuccess)
+                {
+                  alert(res.data.message)
+                }
             })
     }
 
     function edit(id) {
      
         const request = { name: name, code: code, length: length, width: width };
+
+        if(request.length == "")
+            request.length = 0;
+
+        if(request.width == "")
+            request.width = 0;
+
         axios.put(`${baseURL}/${id}`, request, { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } })
             .then(res => {
                 console.log(res);
                 console.log(res.data);
-                listingApi();
+
+                if(!res.data.isSuccess)
+                {
+                 alert(res.data.message)
+                }
+                else
+                {
+                 listingApi();
+                }
+
             })
     }
 
 
     function deleteItem(id) {
     
-        const request = { name: name, code: code, length: length, width: width };
+        const request = { };
         axios.delete(`${baseURL}/${id}`, { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } }, request)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
-                listingApi();
+                if(!res.data.isSuccess)
+                {
+                 alert(res.data.message)
+                }
+                else
+                {
+                 listingApi();
+                }
                 
             })
     }
 
 
-    function Items({ currentItems }) {
-        return (
-            <>
-                {currentItems &&
-                    currentItems.map((item) => (
-                        <div>
-                            <h3>Item #{item}</h3>
-                        </div>
-                    ))}
-            </>
-        );
-    }
 
     const updateCurrentPage = (pageIndex) => {
       
@@ -123,6 +139,7 @@ export const Listing = () => {
                         <input
                             name='code'
                             type='text'
+                            required
                             onChange={e => setCode(e.target.value)}
                         />
 
@@ -132,6 +149,7 @@ export const Listing = () => {
                         <input
                             name='name'
                             type='text'
+                            required
                             onChange={e => setName(e.target.value)}
                         />
                     </div>
@@ -140,6 +158,7 @@ export const Listing = () => {
                         <input
                             name='length'
                             type='number'
+                            required
                             onChange={e => setLength(e.target.value)}
                         />
                     </div>
@@ -148,6 +167,7 @@ export const Listing = () => {
                         <input
                             name='width'
                             type='number'
+                            required
                             onChange={e => setWidth(e.target.value)}
                         />
                     </div>

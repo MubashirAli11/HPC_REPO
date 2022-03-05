@@ -7,6 +7,8 @@ export const Home = () => {
 
     const [userName, setuserName] = useState('');
     const [password, setpassword] = useState('');
+    const [toastermessage, settoastermessage] = useState('');
+
 
 
     const login = () => {
@@ -25,28 +27,23 @@ export const Home = () => {
                 .then(response => response.json())
                 .then(res => {
                     debugger;
-                    localStorage.setItem("token", res.data);
-                    window.open("/listing", "_blank");
 
-                   // this.setState({ redirect: "/listing" });
+                    if(!res.isSuccess)
+                        alert(res.message)
+                    else
+                    {
+
+                        localStorage.setItem("token", res.data);
+                        window.open("/listing", "_self");
+                    }
                 });
         
 
 
-       
-        
-        // fetchWrapper.post(`http://localhost:43061/api/v1/User`, { email, password })
-        //     .then(user => {
-        //         debugger;
-        //         // store user details and jwt token in local storage to keep user logged in between page refreshes
-        //         // localStorage.setItem('user', JSON.stringify(user));
-        //         // setAuth(user);
 
-        //         // // get return url from location state or default to home page
-        //         // const { from } = history.location.state || { from: { pathname: '/' } };
-        //         // history.push(from);
-        //     });
     };
+
+
 
     return (
         <div className="homeMain">
@@ -62,17 +59,16 @@ export const Home = () => {
                     </div>
                     <div className="button-container">
                         <button className="submitButton buttonClass primaryButton" onClick={() => 
-                            login()}>Login</button>
+                            login()}   >Login</button>
                         {/* <input type="button" className="submitButton buttonClass primaryButton" onClick={() => login()} /> */}
                     </div>
+
+           
                 </form>
             </div>
-            {/* <div className="">
-                <h1>Home</h1>
-                <nav>
-                    <Link to="/listing">Listing</Link>
-                </nav>
-            </div> */}
+
+
+
         </div>
     );
 }
