@@ -1,4 +1,5 @@
-Checkout to dev branch by using following command
+1- navigate to HPC_REPO
+2- Checkout to dev branch by using following command
 
 git checkout dev
 
