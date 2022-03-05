@@ -38,7 +38,7 @@ export const Listing = () => {
         axios.get(`${baseURL}?PageIndex=${index}&PageSize=${pageSize}`, { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } }).then((response) => {
             const { data, total } = response.data;
             setListing(data);
-            debugger;
+        
 
      
                 setTotalPage(Array.from(Array(Math.ceil(total / pageSize)).keys()));
@@ -57,10 +57,6 @@ export const Listing = () => {
                 if(!res.data.isSuccess)
                 {
                   alert(res.data.message)
-                }
-                else
-                {
-                 //listingApi();
                 }
             })
     }
