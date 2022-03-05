@@ -10,15 +10,31 @@ namespace Ship.API.CommandValidators
         public UpdateShipCommandValidator()
         {
 
-            RuleFor(command => command.Code).NotEmpty();
-            RuleFor(command => command.Name).NotEmpty();
-            RuleFor(command => command.Length).NotEmpty();
-            RuleFor(command => command.Width).NotEmpty();
+            RuleFor(command => command).Must(command => NullAndEmptyFieldValidations(command));
 
             RuleFor(command => command).Must(command => ValidateCodeFormat(command))
              .WithMessage("Code should follow this format AAAA-1111-A1 A: Alphabets 1: 0-9");
         }
 
+
+        private bool NullAndEmptyFieldValidations(UpdateShipCommand command)
+        {
+
+            if (String.IsNullOrEmpty(command.Code))
+                throw new Exception("Code cannot be empty");
+
+            if (String.IsNullOrEmpty(command.Name))
+                throw new Exception("Name cannot be empty");
+
+            if (command.Length <= 0)
+                throw new Exception("Length cannot be 0 or negative");
+
+            if (command.Width <= 0)
+                throw new Exception("Width cannot be 0 or negative");
+
+
+            return true;
+        }
 
         private bool ValidateCodeFormat(UpdateShipCommand command)
         {

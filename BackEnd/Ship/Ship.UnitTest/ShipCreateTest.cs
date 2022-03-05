@@ -12,42 +12,13 @@ namespace Ship.UnitTest
 {
     public class ShipCreateTest
     {
-        [Fact]
-        public async void Create_Ship_With_Invalid_Code_Format()
-        {
-
-            var options = new DbContextOptionsBuilder<ShipDataContext>()
-             .UseInMemoryDatabase(databaseName: "ShipDB")
-             .Options;
-
-            var context = new ShipDataContext(options);
-
-            string expectedOutput = "Code should follow this format AAAA-1111-A1 A: Alphabets 1: 0-9";
-
-            IUnitOfWork unitOfWork = new UnitOfWork(context);
-
-            CreateShipCommand command = new CreateShipCommand();
-
-            command.Code = "adfdas";
-            command.Name = "ship1";
-            command.Width = 10;
-            command.Length = 10;
-
-            CreateShipCommandHandler commandHandler = new CreateShipCommandHandler(unitOfWork);
-
-            var respone = await commandHandler.Handle(command, new System.Threading.CancellationToken());
-
-            Assert.Null(respone);
-            Assert.False(respone.IsSuccess);
-            Assert.Equal(respone.Message, expectedOutput);
-        }
 
         [Fact]
         public async void Create_Ship_With_Valid_Code_Format()
         {
 
             var options = new DbContextOptionsBuilder<ShipDataContext>()
-             .UseInMemoryDatabase(databaseName: "ShipDB")
+             .UseInMemoryDatabase(databaseName: "ShipDB_Create_Test1")
              .Options;
 
             var context = new ShipDataContext(options);
@@ -56,19 +27,19 @@ namespace Ship.UnitTest
 
             CreateShipCommand command = new CreateShipCommand();
 
-            command.Code = "ahjs-3421-a0";
+            command.Code = "ahjl-3621-a0";
             command.Name = "ship1";
             command.Width = 10;
             command.Length = 10;
 
             CreateShipCommandHandler commandHandler = new CreateShipCommandHandler(unitOfWork);
 
-            var respone = await commandHandler.Handle(command, new System.Threading.CancellationToken());
+            var response = await commandHandler.Handle(command, new System.Threading.CancellationToken());
 
             string expectedOutput = "Success";
 
-            Assert.True(respone.IsSuccess);
-            Assert.Equal(respone.Message, expectedOutput);
+            Assert.True(response.IsSuccess);
+            Assert.Equal(response.Message, expectedOutput);
         }
 
 
@@ -77,7 +48,7 @@ namespace Ship.UnitTest
         {
 
             var options = new DbContextOptionsBuilder<ShipDataContext>()
-             .UseInMemoryDatabase(databaseName: "ShipDB")
+             .UseInMemoryDatabase(databaseName: "ShipDB_Create_Test2")
              .Options;
 
             var context = new ShipDataContext(options);
@@ -96,13 +67,13 @@ namespace Ship.UnitTest
 
             CreateShipCommandHandler commandHandler = new CreateShipCommandHandler(unitOfWork);
 
-            var respone = await commandHandler.Handle(command, new System.Threading.CancellationToken());
+            var response = await commandHandler.Handle(command, new System.Threading.CancellationToken());
 
 
             string expectedOutput = "Record with same code already exists";
 
-            Assert.False(respone.IsSuccess);
-            Assert.Equal(respone.Message, expectedOutput);
+            Assert.False(response.IsSuccess);
+            Assert.Equal(response.Message, expectedOutput);
         }
     }
 }

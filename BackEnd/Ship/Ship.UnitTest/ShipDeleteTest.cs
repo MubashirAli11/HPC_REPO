@@ -20,7 +20,7 @@ namespace Ship.UnitTest
         {
 
             var options = new DbContextOptionsBuilder<ShipDataContext>()
-             .UseInMemoryDatabase(databaseName: "ShipDB")
+             .UseInMemoryDatabase(databaseName: "ShipDB_Delete_Test1")
              .Options;
 
             var context = new ShipDataContext(options);
@@ -35,12 +35,12 @@ namespace Ship.UnitTest
 
             DeleteShipCommandHandler commandHandler = new DeleteShipCommandHandler(unitOfWork);
 
-            var respone = await commandHandler.Handle(command, new System.Threading.CancellationToken());
+            var response = await commandHandler.Handle(command, new System.Threading.CancellationToken());
 
             string expectedOutput = "Can't find record";
 
-            Assert.False(respone.IsSuccess);
-            Assert.Equal(respone.Message, expectedOutput);
+            Assert.False(response.IsSuccess);
+            Assert.Equal(response.Message, expectedOutput);
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace Ship.UnitTest
         {
 
             var options = new DbContextOptionsBuilder<ShipDataContext>()
-              .UseInMemoryDatabase(databaseName: "ShipDB")
+              .UseInMemoryDatabase(databaseName: "ShipDB_Delete_Test2")
               .Options;
 
             var context = new ShipDataContext(options);
@@ -57,7 +57,7 @@ namespace Ship.UnitTest
 
             //Add new record
 
-            unitOfWork.ShipRepository.Add(new Core.Entities.ShipEntity("Ship1", 10, 10, "aBgH-3421-k8"));
+            unitOfWork.ShipRepository.Add(new Core.Entities.ShipEntity("Ship1", 10, 10, "aBgH-3421-n8"));
             await unitOfWork.SaveChangesAsync();
 
      
@@ -68,12 +68,12 @@ namespace Ship.UnitTest
 
             DeleteShipCommandHandler commandHandler = new DeleteShipCommandHandler(unitOfWork);
 
-            var respone = await commandHandler.Handle(command, new System.Threading.CancellationToken());
+            var response = await commandHandler.Handle(command, new System.Threading.CancellationToken());
 
             string expectedOutput = "Success";
 
-            Assert.True(respone.IsSuccess);
-            Assert.Equal(respone.Message, expectedOutput);
+            Assert.True(response.IsSuccess);
+            Assert.Equal(response.Message, expectedOutput);
         }
     }
 }
