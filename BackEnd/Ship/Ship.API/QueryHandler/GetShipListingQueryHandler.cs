@@ -4,14 +4,19 @@ using Ship.API.Queries;
 using Ship.Core.Entities;
 using Ship.Core.IRepositories;
 using System.Linq.Expressions;
+using System.Linq;
+using Ship.API.ApiModels;
+using AutoMapper;
 
 namespace Ship.API.QueryHandler
 {
     public class GetShipListingQueryHandler : IRequestHandler<GetShipListingQuery, ApiResponse>
     {
+        private readonly IMapper _mapper;
         private readonly IShipRepository _shipRepository;
-        public GetShipListingQueryHandler(IShipRepository shipRepository)
+        public GetShipListingQueryHandler(IMapper mapper, IShipRepository shipRepository)
         {
+            _mapper = mapper;
             _shipRepository = shipRepository;
         }
 
@@ -26,11 +31,15 @@ namespace Ship.API.QueryHandler
 
 
                 if (response.Item2 > 0)
-                    return ApiResponse.CreatePaginationResponse("Success", response.Item1, response.Item2, request.PageIndex, request.PageSize);
+                {
+                    var ships = _mapper.Map<List<ShipApiModel>>(response.Item1);
+
+                    return ApiResponse.CreatePaginationResponse("Success", ships, response.Item2, request.PageIndex, request.PageSize);
+                }
 
                 else
-                    return ApiResponse.CreateFailedResponse("No data found");
-              
+                    return ApiResponse.CreatePaginationResponse("Success", new List<ShipApiModel>(), response.Item2, request.PageIndex, request.PageSize);
+
 
             }
             catch (Exception exp)

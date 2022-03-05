@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.3.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="FluentValidation" Version="10.3.6" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.6" />
     <PackageReference Include="MediatR" Version="8.0.1" />
@@ -27,6 +28,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Ship.Core\Ship.Core.csproj" />
     <ProjectReference Include="..\Ship.Infrastructure\Ship.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Mapper\" />
   </ItemGroup>
 
 </Project>

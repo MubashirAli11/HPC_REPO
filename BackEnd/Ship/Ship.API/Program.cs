@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using Ship.API.Authorization;
 using Ship.API.CommandValidators;
 using Ship.API.ExceptionHandler;
+using Ship.API.Mapper;
 using Ship.Core.IRepositories;
 using Ship.Infrastructure;
 using Ship.Infrastructure.Context;
@@ -39,9 +40,9 @@ void RegisterServices(IServiceCollection services)
     services.AddScoped<IShipRepository, ShipRepository>();
     services.AddMediatR(Assembly.GetExecutingAssembly());
 
-    builder.Services.AddControllers();
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen(c =>
+    services.AddControllers();
+    services.AddEndpointsApiExplorer();
+    services.AddSwaggerGen(c =>
     {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Ship API 1.0", Version = "1.0" });
         c.CustomSchemaIds(type => type.ToString());
@@ -72,7 +73,7 @@ void RegisterServices(IServiceCollection services)
                 });
     });
 
-    builder.Services.AddAuthentication(x =>
+    services.AddAuthentication(x =>
     {
         x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -92,11 +93,13 @@ void RegisterServices(IServiceCollection services)
         };
     });
 
-    builder.Services.AddAuthorization()
+    services.AddAuthorization()
     .AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationResultTransformer>();
 
 
-    builder.Services.AddCors(options =>
+    services.AddAutoMapper(c => c.AddProfile<Automapper>());
+
+    services.AddCors(options =>
     {
         // options.use
         options.AddPolicy("AllowAllOrigins",

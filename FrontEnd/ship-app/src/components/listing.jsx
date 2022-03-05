@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import ReactPaginate from 'react-paginate';
 import { useStateWithCallbackLazy } from 'use-state-with-callback';
 
-const baseURL = "http://localhost:63025/api/v1/ship";
+const baseURL = "http://localhost:8080/api/v1/ship";
 
 
 
@@ -23,7 +23,7 @@ export const Listing = () => {
 
 
     React.useEffect(() => {
-        //LoginApi();
+      
 
         listingApi();
         
@@ -60,7 +60,7 @@ export const Listing = () => {
                 }
                 else
                 {
-                 listingApi();
+                 //listingApi();
                 }
             })
     }

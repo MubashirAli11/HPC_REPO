@@ -17,7 +17,7 @@ export const Home = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
             };
-            fetch("http://localhost:43061/api/v1/User", requestOptions)
+            fetch("http://localhost:8081/api/v1/User", requestOptions)
                 .then(response => response.json())
                 .then(res => {
        
