@@ -1,4 +1,6 @@
-﻿using Ship.API.ApiModels.Response;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Ship.API.ApiModels.Response;
 using System.Net;
 using System.Text.Json;
 
@@ -26,7 +28,11 @@ namespace Ship.API.ExceptionHandler
 
                 var failedResponse = ApiResponse.CreateFailedResponse(error.Message);
 
-                var result = JsonSerializer.Serialize(failedResponse);
+                var result = JsonConvert.SerializeObject(failedResponse, new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                });
+
                 await response.WriteAsync(result);
             }
         }

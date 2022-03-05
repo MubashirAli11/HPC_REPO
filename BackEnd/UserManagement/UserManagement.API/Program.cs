@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using UserManagement.API.CommandValidators;
+using UserManagement.API.ExceptionHandler;
 using UserManagement.Core.Entities;
 using UserManagement.Core.IRepositories;
 using UserManagement.Infrastructure;
@@ -100,6 +101,8 @@ void AddApiVersioningConfigured(IServiceCollection services)
 var app = builder.Build();
 
 await SeedUsers();
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 
 app.UseCors("AllowAllOrigins");

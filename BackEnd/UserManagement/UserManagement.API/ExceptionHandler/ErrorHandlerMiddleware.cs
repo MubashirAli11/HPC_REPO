@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.Text.Json;
 using UserManagement.API.ApiModels.Response;
 
 namespace UserManagement.API.ExceptionHandler
@@ -25,7 +27,11 @@ namespace UserManagement.API.ExceptionHandler
 
                 var failedResponse = ApiResponse.CreateFailedResponse(error.Message);
 
-                var result = JsonSerializer.Serialize(failedResponse);
+                var result = JsonConvert.SerializeObject(failedResponse, new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                });
+
                 await response.WriteAsync(result);
             }
         }
