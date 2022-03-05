@@ -2,10 +2,12 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Ship.API.Authorization;
 using Ship.API.CommandValidators;
 using Ship.API.ExceptionHandler;
 using Ship.Core.IRepositories;
@@ -73,6 +75,9 @@ builder.Services.AddAuthentication(x =>
         IssuerSigningKey = new SymmetricSecurityKey(Key)
     };
 });
+
+builder.Services.AddAuthorization()
+.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationResultTransformer>();
 
 
 

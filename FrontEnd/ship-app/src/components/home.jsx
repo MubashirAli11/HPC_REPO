@@ -5,28 +5,22 @@ import React, { useState } from "react";
 export const Home = () => {
 
 
-    const [userName, setuserName] = useState('');
+    const [email, setemail] = useState('');
     const [password, setpassword] = useState('');
-    const [toastermessage, settoastermessage] = useState('');
-
-
 
     const login = () => {
-        debugger;
+   
 
-        
-            const email = 'admin@gmail.com';
-            const password = 'Admin@123';
             const data = { email, password };
             const requestOptions = {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
             };
-            fetch("http://localhost:8081/api/v1/User", requestOptions)
+            fetch("http://localhost:43061/api/v1/User", requestOptions)
                 .then(response => response.json())
                 .then(res => {
-                    debugger;
+       
 
                     if(!res.isSuccess)
                         alert(res.message)
@@ -45,13 +39,18 @@ export const Home = () => {
 
 
 
+    function handleSubmit(event) {
+        event.preventDefault();
+      }
+
+
     return (
         <div className="homeMain">
             <div className="form">
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className="inputContainer">
                         <label>Username </label>
-                        <input type="text" name="uname" required onChange={e => setuserName(e.target.value)}/>
+                        <input type="text" name="uname" required onChange={e => setemail(e.target.value)}/>
                     </div>
                     <div className="inputContainer">
                         <label>Password </label>

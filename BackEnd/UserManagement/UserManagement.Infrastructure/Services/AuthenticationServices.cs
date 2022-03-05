@@ -24,17 +24,19 @@ namespace UserManagement.Infrastructure.Services
         }
 
 
-        public string GenerateAuthenticationToken()
+        public string GenerateAuthenticationToken(UserManagement.Core.Enums.UserTypes userType)
         {
+            List<Claim> claims = new List<Claim>();
 
+            if (userType != Core.Enums.UserTypes.None)
+            {
+                claims.Add(new Claim("role", userType.ToString()));
+            }
 
             var tokenKey = Encoding.UTF8.GetBytes(_configuration["JwtIssuerSettings:Key"]);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
-              {
-             new Claim(ClaimTypes.Name, "")
-              }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddMinutes(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };

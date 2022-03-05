@@ -128,10 +128,22 @@ async Task SeedUsers()
 
     using (var dbcontext = new UserManagementDbContext(options))
     {
-        UserEntity user = new UserEntity("Admin", "admin@gmail.com", "3456789");
-        user.AddId();
+        UserEntity superAdmin = new UserEntity("SuperAdmin", "super_admin@gmail.com",
+                                "3456789", UserManagement.Core.Enums.UserTypes.SuperAdmin);
+        superAdmin.AddId();
 
         PasswordHasher<UserEntity> passwordHasher = new PasswordHasher<UserEntity>();
+
+        superAdmin.PasswordHash = passwordHasher.HashPassword(superAdmin, "SuperAdmin@123");
+
+        superAdmin.SecurityStamp = superAdmin.PasswordHash;
+
+        dbcontext.Add(superAdmin);
+
+
+        UserEntity user = new UserEntity("Admin", "admin@gmail.com", "3456789",
+                          UserManagement.Core.Enums.UserTypes.Admin);
+        user.AddId();
    
         user.PasswordHash = passwordHasher.HashPassword(user, "Admin@123");
 

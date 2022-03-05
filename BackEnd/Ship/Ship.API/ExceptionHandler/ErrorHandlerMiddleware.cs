@@ -26,9 +26,14 @@ namespace Ship.API.ExceptionHandler
                 var response = context.Response;
                 response.ContentType = "application/json";
 
-                var failedResponse = ApiResponse.CreateFailedResponse(error.Message);
+                ApiResponse apiRespponse;
 
-                var result = JsonConvert.SerializeObject(failedResponse, new JsonSerializerSettings
+                if (response.StatusCode == 403)
+                    apiRespponse = ApiResponse.CreateForbiddenResponse(error.Message);
+                else
+                    apiRespponse = ApiResponse.CreateFailedResponse(error.Message);
+
+                var result = JsonConvert.SerializeObject(apiRespponse, new JsonSerializerSettings
                 {
                     ContractResolver = new CamelCasePropertyNamesContractResolver()
                 });

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import ReactPaginate from 'react-paginate';
 import { useStateWithCallbackLazy } from 'use-state-with-callback';
 
-const baseURL = "http://localhost:8080/api/v1/ship";
+const baseURL = "http://localhost:63025/api/v1/ship";
 
 
 
@@ -38,23 +38,29 @@ export const Listing = () => {
         axios.get(`${baseURL}?PageIndex=${index}&PageSize=${pageSize}`, { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } }).then((response) => {
             const { data, total } = response.data;
             setListing(data);
+            debugger;
 
-            setTotalPage(Array.from(Array(Math.ceil(total / pageSize)).keys()));
+     
+                setTotalPage(Array.from(Array(Math.ceil(total / pageSize)).keys()));
+            
         });
     };
  
 
     function handleSubmit(form) {
-        console.log(name, code, length, width);
+       
         const request = { name: name, code: code, length: length, width: width };
         axios.post(`${baseURL}`, request, { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } })
-            .then(res => {
-                console.log(res);
-                console.log(res.data);
 
+            .then(res => {
+       
                 if(!res.data.isSuccess)
                 {
                   alert(res.data.message)
+                }
+                else
+                {
+                 listingApi();
                 }
             })
     }
@@ -71,8 +77,7 @@ export const Listing = () => {
 
         axios.put(`${baseURL}/${id}`, request, { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } })
             .then(res => {
-                console.log(res);
-                console.log(res.data);
+             
 
                 if(!res.data.isSuccess)
                 {
@@ -92,8 +97,7 @@ export const Listing = () => {
         const request = { };
         axios.delete(`${baseURL}/${id}`, { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } }, request)
             .then(res => {
-                console.log(res);
-                console.log(res.data);
+          
                 if(!res.data.isSuccess)
                 {
                  alert(res.data.message)

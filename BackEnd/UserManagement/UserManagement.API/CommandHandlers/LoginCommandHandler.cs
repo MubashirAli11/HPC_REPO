@@ -39,7 +39,7 @@ namespace UserManagement.API.CommandHandlers
 
                 if (result.Succeeded)
                 {
-                    return ApiResponse.CreateSuccessResponse("Success", _authenticationServices.GenerateAuthenticationToken());
+                    return ApiResponse.CreateSuccessResponse("Success", _authenticationServices.GenerateAuthenticationToken(user.UserType));
                 }
                 else
                 {
