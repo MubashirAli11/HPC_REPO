@@ -1,0 +1,46 @@
+Checkout to dev branch by using following command
+
+git checkout dev
+
+Deploye Ship API:
+
+1- navigate to HPC_REPO\BackEnd\Ship
+2- docker build -t ship/app .
+3- docker run -d -p 8080:80 ship/app
+
+
+Deploy UserManagement API:
+
+1- navigate to HPC_REPO\BackEnd\Ship
+2- docker build -t user/app .
+3- docker run -d -p 8081:80 user/app
+
+
+
+Run Front End App:
+
+1- navigate to HPC_REPO\FrontEnd\ship-app
+2- open ship-app folder on visual studio code
+3- Open Cli with ctrl+`
+4- run npm install command
+5- run npm start command
+
+
+
+To Run Ship API Test Cases
+
+1- navigate to HPC_REPO\BackEnd\Ship
+2- Open Ship solution on visual stuido
+3- Click on test then click on Run All Tests
+
+App Testing
+
+After you run ship front end app use following credentials
+
+Username: super_admin@gmail.com , Password: SuperAdmin@123
+
+This credentials will allow you to Create, Update, Delete and Get Ship Data
+
+on the other hand if you use following credentials you can only Get Ship Data
+
+Username: admin@gmail.com , Password: Admin@123"
