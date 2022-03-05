@@ -22,82 +22,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Ship API 1.0", Version = "1.0" });
-    c.CustomSchemaIds(type => type.ToString());
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme."
-    });
-
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                          new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
-                                }
-                            },
-                            new string[] {}
-
-                    }
-                });
-});
-
-
-builder.Services.AddAuthentication(x =>
-{
-    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(o =>
-{
-    var Key = Encoding.UTF8.GetBytes(builder.Configuration["JwtIssuerSettings:Key"]);
-    o.SaveToken = true;
-    o.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["JwtIssuerSettings:Issuer"],
-        ValidAudience = builder.Configuration["JwtIssuerSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Key)
-    };
-});
-
-builder.Services.AddAuthorization()
-.AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationResultTransformer>();
-
-
-
-builder.Services.AddCors(options =>
-{
-    // options.use
-    options.AddPolicy("AllowAllOrigins",
-                      corebuilder =>
-                      {
-                          corebuilder
-                              .AllowAnyOrigin()
-                              .AllowAnyHeader()
-                              .AllowAnyMethod();
-                      });
-});
-
-AddApiVersioningConfigured(builder.Services);
-
 RegisterServices(builder.Services);
 
+AddApiVersioningConfigured(builder.Services);
 
 void RegisterServices(IServiceCollection services)
 {
@@ -112,8 +39,75 @@ void RegisterServices(IServiceCollection services)
     services.AddScoped<IShipRepository, ShipRepository>();
     services.AddMediatR(Assembly.GetExecutingAssembly());
 
-   
+    builder.Services.AddControllers();
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "Ship API 1.0", Version = "1.0" });
+        c.CustomSchemaIds(type => type.ToString());
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Description = "JWT Authorization header using the Bearer scheme."
+        });
 
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            new string[] {}
+
+                    }
+                });
+    });
+
+    builder.Services.AddAuthentication(x =>
+    {
+        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer(o =>
+    {
+        var Key = Encoding.UTF8.GetBytes(builder.Configuration["JwtIssuerSettings:Key"]);
+        o.SaveToken = true;
+        o.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JwtIssuerSettings:Issuer"],
+            ValidAudience = builder.Configuration["JwtIssuerSettings:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Key)
+        };
+    });
+
+    builder.Services.AddAuthorization()
+    .AddSingleton<IAuthorizationMiddlewareResultHandler, AuthorizationResultTransformer>();
+
+
+    builder.Services.AddCors(options =>
+    {
+        // options.use
+        options.AddPolicy("AllowAllOrigins",
+                          corebuilder =>
+                          {
+                              corebuilder
+                                  .AllowAnyOrigin()
+                                  .AllowAnyHeader()
+                                  .AllowAnyMethod();
+                          });
+    });
 }
 
 void AddApiVersioningConfigured(IServiceCollection services)
@@ -133,13 +127,6 @@ var app = builder.Build();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseCors("AllowAllOrigins");
-
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
 
 app.UseSwagger();
 app.UseSwaggerUI();

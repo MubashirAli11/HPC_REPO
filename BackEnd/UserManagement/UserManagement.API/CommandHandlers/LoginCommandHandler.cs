@@ -33,7 +33,7 @@ namespace UserManagement.API.CommandHandlers
                 var user = await _unitOfWork.UserRepository.GetByEmail(request.Email);
 
                 if (user == null)
-                    return ApiResponse.CreateFailedResponse("user doesn't exists");
+                    return ApiResponse.CreateFailedResponse("user doesn't exist");
 
                 var result = await _signInManager.PasswordSignInAsync(user, request.Password, false, false);
 
@@ -49,8 +49,6 @@ namespace UserManagement.API.CommandHandlers
             }
             catch (Exception exp)
             {
-                //TODO:
-                //Add exceptions
                 return ApiResponse.CreateFailedResponse(exp.Message);
             }
         }

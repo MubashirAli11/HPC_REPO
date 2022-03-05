@@ -38,11 +38,6 @@ namespace Ship.API.ApiModels.Response
             return new ApiResponse(false, 400, message, null, null, null, null);
         }
 
-        public static ApiResponse CreateForbiddenResponse(string message)
-        {
-            return new ApiResponse(false, 403, message, null, null, null, null);
-        }
-
         public static ApiResponse CreatePaginationResponse(string message, object data, int? total, int? pageIndex, int? pageSize)
 
         {

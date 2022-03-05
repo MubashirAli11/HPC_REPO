@@ -29,11 +29,7 @@ namespace Ship.API.Authorization
             PolicyAuthorizationResult policyAuthorizationResult)
         {
             if (policyAuthorizationResult.Forbidden && policyAuthorizationResult.AuthorizationFailure != null)
-            {
-                //httpContext.Response.StatusCode = 403;
-
                 throw new Exception("You don't have permission to perform this operation");
-            }
 
             await _handler.HandleAsync(requestDelegate, httpContext, authorizationPolicy, policyAuthorizationResult);
         }

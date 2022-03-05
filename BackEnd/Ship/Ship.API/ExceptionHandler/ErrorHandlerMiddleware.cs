@@ -28,10 +28,7 @@ namespace Ship.API.ExceptionHandler
 
                 ApiResponse apiRespponse;
 
-                if (response.StatusCode == 403)
-                    apiRespponse = ApiResponse.CreateForbiddenResponse(error.Message);
-                else
-                    apiRespponse = ApiResponse.CreateFailedResponse(error.Message);
+                apiRespponse = ApiResponse.CreateFailedResponse(error.Message);
 
                 var result = JsonConvert.SerializeObject(apiRespponse, new JsonSerializerSettings
                 {

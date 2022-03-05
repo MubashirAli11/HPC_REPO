@@ -37,8 +37,6 @@ namespace Ship.API.CommandHandlers
             }
             catch (Exception exp)
             {
-                //TODO:
-                //Add exceptions
                 return ApiResponse.CreateFailedResponse(exp.Message);
             }
         }

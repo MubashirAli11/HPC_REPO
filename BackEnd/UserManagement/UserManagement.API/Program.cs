@@ -23,45 +23,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddCors(options =>
-{
-    // options.use
-    options.AddPolicy("AllowAllOrigins",
-                      corebuilder =>
-                      {
-                          corebuilder
-                              .AllowAnyOrigin()
-                              .AllowAnyHeader()
-                              .AllowAnyMethod();
-                      });
-});
-
-
-builder.Services.AddCors(options =>
-{
-    // options.use
-    options.AddPolicy("AllowAllOrigins",
-                      corebuilder =>
-                      {
-                          corebuilder
-                              .AllowAnyOrigin()
-                              .AllowAnyHeader()
-                              .AllowAnyMethod();
-                      });
-});
-
-
 RegisterServices(builder.Services);
 
 AddApiVersioningConfigured(builder.Services);
 
 void RegisterServices(IServiceCollection services)
 {
+
+    services.AddControllers();
+
+    services.AddEndpointsApiExplorer();
+    services.AddSwaggerGen();
+
     services.AddDbContext<UserManagementDbContext>(opt => opt.UseInMemoryDatabase("UserManagementDB"));
 
     services.AddMvc()
@@ -79,9 +52,21 @@ void RegisterServices(IServiceCollection services)
 
     services.AddIdentity<UserEntity, IdentityRole<string>>()
           .AddEntityFrameworkStores<UserManagementDbContext>()
- 
-              .AddUserManager<UserManager<UserEntity>>()
+          .AddUserManager<UserManager<UserEntity>>()
           .AddDefaultTokenProviders();
+
+    services.AddCors(options =>
+    {
+        // options.use
+        options.AddPolicy("AllowAllOrigins",
+                          corebuilder =>
+                          {
+                              corebuilder
+                                  .AllowAnyOrigin()
+                                  .AllowAnyHeader()
+                                  .AllowAnyMethod();
+                          });
+    });
 
 }
 

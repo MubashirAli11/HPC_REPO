@@ -29,9 +29,7 @@ namespace UserManagement.Infrastructure.Services
             List<Claim> claims = new List<Claim>();
 
             if (userType != Core.Enums.UserTypes.None)
-            {
                 claims.Add(new Claim("role", userType.ToString()));
-            }
 
             var tokenKey = Encoding.UTF8.GetBytes(_configuration["JwtIssuerSettings:Key"]);
             var tokenDescriptor = new SecurityTokenDescriptor
