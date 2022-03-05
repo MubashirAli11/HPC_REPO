@@ -32,7 +32,7 @@ namespace Ship.Infrastructure.Repositories
 
         public async Task<bool> Exists(string code)
         {
-            return await dbSet.AnyAsync(x => x.Code == code);
+            return await dbSet.AnyAsync(x => x.Code == code && !x.IsDeleted);
         }
     }
 }

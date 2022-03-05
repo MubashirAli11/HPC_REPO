@@ -12,7 +12,6 @@ export const Listing = () => {
 
 
     const [name, setName] = useState('');
-    const [token, setToken] = useStateWithCallbackLazy('');
     const [code, setCode] = useState('');
     const [length, setLength] = useState('');
     const [width, setWidth] = useState('');
@@ -24,46 +23,31 @@ export const Listing = () => {
 
 
     React.useEffect(() => {
-        LoginApi();
+        //LoginApi();
+
+        listingApi();
+        
+       
 
     }, []);
 
     const listingApi = (pageIndex) => {
-        debugger;
-        console.log(token)
+
         const index = typeof pageIndex == "number" ? pageIndex : currentPage;
 
-        axios.get(`${baseURL}?PageIndex=${index}&PageSize=${pageSize}`, { headers: { "Authorization": `Bearer ${token}` } }).then((response) => {
-            const { data, Total } = response.data;
+        axios.get(`${baseURL}?PageIndex=${index}&PageSize=${pageSize}`, { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } }).then((response) => {
+            const { data, total } = response.data;
             setListing(data);
 
-            setTotalPage(Array.from(Array(Math.ceil(100 / pageSize)).keys()));
+            setTotalPage(Array.from(Array(Math.ceil(total / pageSize)).keys()));
         });
     };
-    const LoginApi = () => {
-        const email = 'admin@gmail.com';
-        const password = 'Admin@123';
-        const data = { email, password };
-        const requestOptions = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
-        };
-        fetch("http://localhost:43061/api/v1/User", requestOptions)
-            .then(response => response.json())
-            .then(res => {
-                debugger;
-                setToken(res.data, () => {
-                    listingApi();
-                });
-
-            });
-    };
+ 
 
     function handleSubmit(form) {
         console.log(name, code, length, width);
         const request = { name: name, code: code, length: length, width: width };
-        axios.post(`${baseURL}`, request)
+        axios.post(`${baseURL}`, request, { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } })
             .then(res => {
                 console.log(res);
                 console.log(res.data);
@@ -71,23 +55,26 @@ export const Listing = () => {
     }
 
     function edit(id) {
-        debugger
+     
         const request = { name: name, code: code, length: length, width: width };
-        axios.put(`${baseURL}${id}`, request)
+        axios.put(`${baseURL}/${id}`, request, { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } })
             .then(res => {
                 console.log(res);
                 console.log(res.data);
+                listingApi();
             })
     }
 
 
     function deleteItem(id) {
-        debugger
+    
         const request = { name: name, code: code, length: length, width: width };
-        axios.delete(`${baseURL}${id}`, request)
+        axios.delete(`${baseURL}/${id}`, { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } }, request)
             .then(res => {
                 console.log(res);
                 console.log(res.data);
+                listingApi();
+                
             })
     }
 
@@ -106,7 +93,7 @@ export const Listing = () => {
     }
 
     const updateCurrentPage = (pageIndex) => {
-        debugger
+      
         if (typeof pageIndex == "number") {
             setCurrentPage(pageIndex);
             listingApi(pageIndex);
@@ -126,7 +113,7 @@ export const Listing = () => {
         <div className="MainContainer">
             <div className="MainContainerForm">
                 <div className="topBar">
-                    <h2>Listing View{token}</h2>
+                    <h2>Listing View</h2>
 
                 </div>
 
